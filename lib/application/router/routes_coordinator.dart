@@ -5,6 +5,9 @@ import 'package:vacinas/application/constants/path.dart';
 import 'package:vacinas/application/pages/ErrorPage.dart';
 import 'package:vacinas/application/pages/HomePage.dart';
 import 'package:vacinas/application/pages/HomePage2.dart';
+import 'package:vacinas/application/pages/manipulate_animal.dart';
+import 'package:vacinas/application/pages/true_home_page.dart';
+import 'package:vacinas/application/pages/utils/responsive.dart';
 import 'package:vacinas/application/router/routes/animal_path.dart';
 import 'package:vacinas/application/router/routes/app_path.dart';
 import 'package:vacinas/application/router/routes/error_path.dart';
@@ -21,7 +24,7 @@ class RoutesCoordinator extends ChangeNotifier {
   RoutesCoordinator({required this.navigatorKey})
       : _pages = [
           MaterialPage<dynamic>(
-            child: HomePage(),
+            child: HomeScreen(),
             key: _homeKey,
             name: HomePath().formattedPath,
           ),
@@ -56,7 +59,7 @@ class RoutesCoordinator extends ChangeNotifier {
       if (currentPath.formattedPath != path.formattedPath) {
         _pages = [];
 
-        _addPage(HomePage(), name: Path.home, customKey: _homeKey);
+        _addPage(ListAnimalScreen(), name: Path.home, customKey: _homeKey);
       } else {
         // Otherwise we simply remove all pages other than the matched one
         _pages.removeRange(1, _pages.length);
@@ -90,7 +93,7 @@ class RoutesCoordinator extends ChangeNotifier {
         'No pages with the same keys are allowed. Page with the same key: $pagesWithSameKey',
       );
     }
-    print("5 " + name.pathFormatted);
+    //print("5 " + name.pathFormatted);
     _pages.add(
       MaterialPage<dynamic>(
           child: widget,

@@ -30,7 +30,8 @@ class HomeControllerImpl extends HomeController {
     }
     List<Animal> animalList = await _services.getAllAnimal();
     state = LoadedHomeState(
-        dataSource: DataTableSourceIplm(dataSource: animalList));
+        dataSource: DataTableSourceIplm(dataSource: animalList),
+        animalList: animalList);
   }
 
   @override
@@ -48,7 +49,8 @@ abstract class HomeState extends Equatable {
 class LoadingHomeState extends HomeState {}
 
 class LoadedHomeState extends HomeState {
-  LoadedHomeState({required this.dataSource});
+  LoadedHomeState({required this.dataSource, required this.animalList});
 
   final DataTableSourceIplm dataSource;
+  final List<Animal> animalList;
 }

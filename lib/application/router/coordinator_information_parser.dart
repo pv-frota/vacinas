@@ -15,7 +15,7 @@ class CoordinatorInformationParser extends RouteInformationParser<AppPath> {
   @override
   Future<AppPath> parseRouteInformation(
       RouteInformation routeInformation) async {
-    print("3" + routeInformation.location.toString());
+    //print("3" + routeInformation.location.toString());
     return SynchronousFuture(parseRoute(routeInformation.location ?? ""));
   }
 
@@ -26,7 +26,7 @@ class CoordinatorInformationParser extends RouteInformationParser<AppPath> {
         pathList.add(p.pathFormatted);
       }
     }
-    print("2 " + path.formattedPath);
+    //print("2 " + path.formattedPath);
     if (pathList.contains(path.formattedPath)) {
       return RouteInformation(location: path.formattedPath);
     } else {

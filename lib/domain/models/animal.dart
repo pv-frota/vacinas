@@ -7,7 +7,7 @@ class Animal extends Entity {
   String nome;
   String dono;
   String telefone;
-  String? tipo;
+  String tipo;
   int nascimento;
   Raca raca;
   List<Vacina> vacinaList;
@@ -19,7 +19,7 @@ class Animal extends Entity {
       required this.nome,
       required this.raca,
       required this.telefone,
-      this.tipo,
+      required this.tipo,
       required this.vacinaList});
 
   @override
@@ -27,16 +27,20 @@ class Animal extends Entity {
       [id, nome, dono, telefone, tipo, nascimento, raca, vacinaList];
 
   @override
-  int get key => this.id;
+  List<String>? get values => [
+        this.id.toString(),
+        this.nome,
+        this.raca.nome,
+        this.tipo,
+        this.telefone,
+        this.nascimento.toString(),
+      ];
 
   @override
-  String get name => this.nome;
+  List<String>? get valuesDescriptions =>
+      ["Id", "Nome", "Raça", "Tipo", "Nascimento", "Telefone"];
 
   @override
-  String? get optional1 => this.raca.nome;
-
-  @override
-  String? get optional2 => this.dono;
-  @override
-  String? get optional3 => this.telefone;
+  // TODO: implement iconAttributeName
+  String? get iconAttributeName => "Tipo";
 }

@@ -23,7 +23,7 @@ AppPath parseRoute(String path) {
     return _homePath;
   }
   final firstSegment = pathUri.pathSegments[0];
-  print("4 " + pathUri.path);
+  //print("4 " + pathUri.path);
 
   if (firstSegment == _homePath.value) {
     return HomePath();

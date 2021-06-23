@@ -1,11 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-///[Entity] is an abstract class extended by models that need to be used in a [PaginatedDataTable],
-///it is used in [DataTableImpl] that is needed by [PaginatedDataTable]
+///[Entity] is an abstract class extended by models that need to be used in a [PaginatedDataTable]
+///and [PaginatedListView]
 abstract class Entity extends Equatable {
-  int get key;
-  String get name;
-  String? get optional1;
-  String? get optional2;
-  String? get optional3;
+  ///Values utilized by the data views, first value should be icon related if useIcon is true,
+  ///[PaginatedListView] only uses the first three values outside of the Expansion
+  List<String>? get values;
+
+  ///Description utilized by the data views
+  List<String>? get valuesDescriptions;
+
+  String? get iconAttributeName;
 }

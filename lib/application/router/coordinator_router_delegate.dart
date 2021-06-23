@@ -42,7 +42,7 @@ class CoordinatorRouterDelegate extends RouterDelegate<AppPath>
 
   @override
   Future<void> setInitialRoutePath(AppPath configuration) {
-    print("initial route: " + configuration.formattedPath);
+    //print("initial route: " + configuration.formattedPath);
     return super.setInitialRoutePath(configuration);
   }
 

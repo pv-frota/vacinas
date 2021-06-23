@@ -18,8 +18,8 @@ class AnimalPath extends AppPath {
     }
 
     String firstElement = animalPath.elementAt(0);
-    print("->" + firstElement);
-    print("->" + ListarAnimalPath.pathName.valueFromPath(position: 1));
+    //print("->" + firstElement);
+    //print("->" + ListarAnimalPath.pathName.valueFromPath(position: 1));
 
     if (firstElement == ListarAnimalPath.pathName.valueFromPath(position: 1) ||
         firstElement == basePathName.valueFromPath()) {

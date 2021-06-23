@@ -6,21 +6,11 @@ class CustomPaginatedDataTable extends StatelessWidget {
       {Key? key,
       required this.dataTableSource,
       required this.rowsPerPage,
-      required this.header,
-      required this.keyColumnName,
-      required this.nameColumnName,
-      this.optional1ColumnName,
-      this.optional2ColumnName,
-      this.optional3ColumnName})
+      required this.header})
       : super(key: key);
 
   final int rowsPerPage;
   final String header;
-  final String keyColumnName;
-  final String nameColumnName;
-  final String? optional1ColumnName;
-  final String? optional2ColumnName;
-  final String? optional3ColumnName;
 
   final DataTableSourceIplm dataTableSource;
 
@@ -37,18 +27,9 @@ class CustomPaginatedDataTable extends StatelessWidget {
   }
 
   List<DataColumn> generateDataColumns() {
-    List<DataColumn> columns = [
-      DataColumn(label: Text(keyColumnName)),
-      DataColumn(label: Text(nameColumnName))
-    ];
-    if (optional1ColumnName != null) {
-      columns.add(DataColumn(label: Text(optional1ColumnName!)));
-    }
-    if (optional2ColumnName != null) {
-      columns.add(DataColumn(label: Text(optional2ColumnName!)));
-    }
-    if (optional3ColumnName != null) {
-      columns.add(DataColumn(label: Text(optional3ColumnName!)));
+    List<DataColumn> columns = [];
+    for (String s in dataTableSource.dataSource[0].valuesDescriptions!) {
+      columns.add(DataColumn(label: Text(s)));
     }
     return columns;
   }
@@ -62,21 +43,10 @@ class DataTableSourceIplm extends DataTableSource {
 
   List<DataCell> generateDataCells(int index) {
     Entity entity = dataSource[index];
-    List<DataCell> cells = [
-      DataCell(Text(entity.key.toString())),
-      DataCell(Text(entity.name))
-    ];
+    List<DataCell> cells = [];
 
-    if (entity.optional1 != null) {
-      cells.add(DataCell(Text(entity.optional1!)));
-    }
-
-    if (entity.optional2 != null) {
-      cells.add(DataCell(Text(entity.optional2!)));
-    }
-
-    if (entity.optional3 != null) {
-      cells.add(DataCell(Text(entity.optional3!)));
+    for (String s in entity.values!) {
+      cells.add(DataCell(Text(s)));
     }
     return cells;
   }
