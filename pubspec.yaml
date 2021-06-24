@@ -53,6 +53,11 @@ dependencies:
   flutter_riverpod: ^0.13.0
 
   ###
+  # Navigation
+  ###
+  beamer: ^0.14.1
+
+  ###
   # UI
   ###
   layoutr: ^1.0.0

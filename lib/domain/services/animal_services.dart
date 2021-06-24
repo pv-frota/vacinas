@@ -4,6 +4,7 @@ import 'package:vacinas/domain/models/animal.dart';
 abstract class AnimalServices {
   // Future<Animal> getAnimalById(int id);
   Future<List<Animal>> getAllAnimal();
+  Future<Animal> saveAnimal(Animal a);
 }
 
 class AnimalServicesImpl implements AnimalServices {
@@ -14,5 +15,10 @@ class AnimalServicesImpl implements AnimalServices {
   @override
   Future<List<Animal>> getAllAnimal() {
     return animalRepository.getAllAnimal();
+  }
+
+  @override
+  Future<Animal> saveAnimal(Animal a) {
+    return animalRepository.saveAnimal(a);
   }
 }

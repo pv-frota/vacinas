@@ -8,6 +8,7 @@ abstract class AnimalRepository {
 
   ///Get request that returns a list of all `Animal`s
   Future<List<Animal>> getAllAnimal();
+  Future<Animal> saveAnimal(Animal animal);
 }
 
 class AnimalRepositoryImpl extends GenericWebRequestImpl
@@ -16,11 +17,20 @@ class AnimalRepositoryImpl extends GenericWebRequestImpl
 
   AnimalRepositoryImpl(String path) : super(path);
 
-  Future<Animal> getAnimalById(int id) async {
-    Map<String, dynamic> map = await super.getById(id);
+  @override
+  Future<Animal> saveAnimal(Animal animal) async {
+    Map<String, dynamic> asJson = _animalSerializer.to(animal);
+    dynamic map = await super.save(asJson);
     return _animalSerializer.from(map);
   }
 
+  @override
+  Future<Animal> getAnimalById(int id) async {
+    dynamic map = await super.getById(id);
+    return _animalSerializer.from(map);
+  }
+
+  @override
   Future<List<Animal>> getAllAnimal() async {
     List map = await super.getAll();
     return _animalSerializer.fromList(map);

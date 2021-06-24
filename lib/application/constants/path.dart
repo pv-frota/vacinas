@@ -23,7 +23,6 @@ extension FormattedPath on Path {
 
     if (path.contains("_")) {
       path = path.replaceAll("_", "/");
-      print(path);
     }
     return "/$path";
   }

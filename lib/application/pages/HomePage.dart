@@ -1,9 +1,11 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vacinas/application/controllers/HomePageController.dart';
 import 'package:vacinas/application/controllers/manipulate_animal_controller.dart';
+import 'package:vacinas/application/pages/utils/responsive.dart';
 import 'package:vacinas/application/widgets/custom_paginated_data_table.dart';
 import 'package:vacinas/application/widgets/custom_paginated_list_view.dart';
 
@@ -20,41 +22,52 @@ class ListAnimalScreen extends HookWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final loadedState = state as LoadedHomeState;
-    final paginatedDataView = !kIsWeb
-        ? CustomPaginatedDataTable(
-            dataTableSource: loadedState.dataSource,
-            rowsPerPage: 5,
-            header: "Lista de animais",
-          )
-        : CustomPaginatedListView(
-            data: loadedState.animalList,
-            itemsPerPage: 3,
-            usesIcon: true,
-            listName: "Lista de animais",
-            onTap: (index) {
-              animalController.selectAnimal(loadedState.animalList[index]);
-            },
-          );
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Vacinas"),
       ),
       body: Container(
         child: SafeArea(
-          child: Expanded(
-            child: Column(
-              children: [
-                Center(child: paginatedDataView),
-                ElevatedButton(
-                    onPressed: () => controller.getAllAnimal(),
-                    child: Text("Atualizar lista"))
-              ],
-            ),
+          child: Column(
+            children: [
+              Center(child: Consumer(
+                builder: (context, watch, child) {
+                  final a = watch(homeController.state);
+                  return displayData(
+                      a as LoadedHomeState, animalController, context);
+                },
+              )),
+              ElevatedButton(
+                  onPressed: () => controller.getAllAnimal(),
+                  child: Text("Atualizar lista"))
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Widget displayData(LoadedHomeState state,
+      ManipulateAnimalController animalController, BuildContext context) {
+    if (!Responsive.isMobile(context)) {
+      return CustomPaginatedDataTable(
+        data: state.animalList,
+        rowsPerPage: 5,
+        header: "Lista de animais",
+        onTap: (index) {
+          animalController.selectAnimal(state.animalList[index]);
+        },
+      );
+    } else {
+      return CustomPaginatedListView(
+        data: state.animalList,
+        itemsPerPage: 3,
+        usesIcon: true,
+        listName: "Lista de animais",
+        onTap: (index) {
+          Beamer.of(context).beamToNamed("/animal/editar/$index");
+        },
+      );
+    }
   }
 }

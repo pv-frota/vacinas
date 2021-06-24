@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,11 +10,10 @@ import 'package:vacinas/data/gateways/local/sembast_database.dart';
 import 'package:vacinas/data/repositories/animal_repository.dart';
 import 'package:vacinas/domain/services/animal_services.dart';
 import 'package:vacinas/data/gateways/local/sembast.dart' as sembast;
-import 'configure_nonweb.dart' if (dart.library.html) 'configure_web.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  configureApp();
+  Beamer.setPathUrlStrategy();
   final appVM = AppVMImpl();
   runApp(AppRoot(appVM));
 }

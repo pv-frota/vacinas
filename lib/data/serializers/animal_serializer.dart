@@ -50,7 +50,8 @@ class AnimalSerializer implements Serializer<Animal, Map<String, dynamic>> {
         AnimalKeys.telefone: animal.telefone,
         AnimalKeys.nascimento: animal.nascimento,
         AnimalKeys.tipo: animal.tipo,
-        AnimalKeys.raca: animal.raca,
-        AnimalKeys.vacinaList: animal.vacinaList,
+        AnimalKeys.raca: RacaSerializer().to(animal.raca),
+        AnimalKeys.vacinaList:
+            animal.vacinaList.map((v) => VacinaSerializer().to(v)).toList(),
       };
 }

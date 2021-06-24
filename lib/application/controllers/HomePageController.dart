@@ -14,6 +14,8 @@ abstract class HomeController extends StateNotifier<HomeState> {
   HomeController(HomeState state) : super(state);
 
   Future<void> getAllAnimal();
+  void updateState(List<Animal> al);
+  int getPosition(int id);
 }
 
 class HomeControllerImpl extends HomeController {
@@ -29,14 +31,25 @@ class HomeControllerImpl extends HomeController {
       state = LoadingHomeState();
     }
     List<Animal> animalList = await _services.getAllAnimal();
-    state = LoadedHomeState(
-        dataSource: DataTableSourceIplm(dataSource: animalList),
-        animalList: animalList);
+    animalList.sort((a, b) => a.values![0].compareTo(b.values![0]));
+    state = LoadedHomeState(animalList: animalList);
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void updateState(List<Animal> al) {
+    state = LoadedHomeState(animalList: al);
+  }
+
+  @override
+  int getPosition(int id) {
+    return (state as LoadedHomeState)
+        .animalList
+        .indexWhere((element) => element.id == id);
   }
 }
 
@@ -49,8 +62,7 @@ abstract class HomeState extends Equatable {
 class LoadingHomeState extends HomeState {}
 
 class LoadedHomeState extends HomeState {
-  LoadedHomeState({required this.dataSource, required this.animalList});
+  LoadedHomeState({required this.animalList});
 
-  final DataTableSourceIplm dataSource;
   final List<Animal> animalList;
 }

@@ -1,11 +1,16 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:layoutr/common_layout.dart';
+import 'package:vacinas/application/pages/HomePage.dart';
 import 'package:vacinas/application/pages/SplashPage.dart';
+import 'package:vacinas/application/pages/manipulate_animal.dart';
+import 'package:vacinas/application/pages/true_home_page.dart';
 import 'package:vacinas/application/pages/utils/scaffold_message.dart';
 import 'package:vacinas/application/router/coordinator_information_parser.dart';
 import 'package:vacinas/application/router/coordinator_router_delegate.dart';
+import 'package:vacinas/application/router/routes.dart';
 import 'package:vacinas/application/router/routes_coordinator.dart';
 import 'package:vacinas/application/theme/theme_controller.dart';
 import 'package:vacinas/main.dart';
@@ -56,28 +61,45 @@ class _LoadedAppRoot extends StatefulHookWidget {
 }
 
 class _LoadedAppRootState extends State<_LoadedAppRoot> {
-  PlatformRouteInformationProvider? _routeInformationParser;
+  // PlatformRouteInformationProvider? _routeInformationParser;
 
   @override
   Widget build(BuildContext context) {
-    final coordinator = readCoordinator(context);
+    // final coordinator = readCoordinator(context);
 
     // Must keep stored the `PlatformRouteInformationProvider`, otherwise when this widget rebuilds (for any reason),
     // the current route will be reset to our "root". Not sure if this is the best approach, but this new Router API
     // sure is confusing.
-    _routeInformationParser ??= PlatformRouteInformationProvider(
-      initialRouteInformation:
-          RouteInformation(location: coordinator.currentRoute),
+    // _routeInformationParser ??= PlatformRouteInformationProvider(
+    //   initialRouteInformation:
+    //       RouteInformation(location: coordinator.currentRoute),
+    // );
+
+    final routerDelegate = BeamerDelegate(
+      locationBuilder: SimpleLocationBuilder(
+        routes: {
+          '/': (context, state) => HomeScreen(),
+          '/animal': (context, state) => ManipulateAnimalScreen(),
+          '/animal/all': (context, state) => ListAnimalScreen(),
+          '/animal/new': (context, state) => ManipulateAnimalScreen(),
+          '/animal/edit/:animalId': (context, state) {
+            final id = state.pathParameters['animalId'];
+            return BeamPage(
+                key: ValueKey('editar-$id'),
+                title: "Editar informações do animal",
+                child: ManipulateAnimalScreen(selectedId: int.parse(id!)));
+          }
+        },
+      ),
     );
 
     return MaterialApp.router(
+      routerDelegate: routerDelegate,
+      routeInformationParser: BeamerParser(),
       scaffoldMessengerKey: useScaffoldMessenger(),
       title: 'Vacinas',
       debugShowCheckedModeBanner: false,
       theme: useThemeController().currentThemeData(context),
-      routerDelegate: CoordinatorRouterDelegate(coordinator),
-      routeInformationParser: CoordinatorInformationParser(),
-      routeInformationProvider: _routeInformationParser,
     );
   }
 }

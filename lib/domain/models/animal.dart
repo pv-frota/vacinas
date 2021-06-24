@@ -32,8 +32,8 @@ class Animal extends Entity {
         this.nome,
         this.raca.nome,
         this.tipo,
-        this.telefone,
         this.nascimento.toString(),
+        this.telefone,
       ];
 
   @override

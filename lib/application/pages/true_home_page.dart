@@ -14,11 +14,11 @@ class HomeScreen extends StatelessWidget {
         desktop: Row(
           children: [
             Expanded(
-              flex: _size.width > 1340 ? 3 : 5,
+              flex: _size.width > 1340 ? 5 : 6,
               child: ListAnimalScreen(),
             ),
             Expanded(
-              flex: _size.width > 1340 ? 2 : 4,
+              flex: _size.width > 1340 ? 4 : 3,
               child: ManipulateAnimalScreen(),
             ),
           ],

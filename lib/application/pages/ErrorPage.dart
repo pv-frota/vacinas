@@ -13,9 +13,7 @@ class ErrorPage extends HookWidget {
         children: [
           Text("Error has occurred"),
           ElevatedButton(
-              onPressed: () =>
-                  readCoordinator(context).navigateTo(pagePath: Path.home),
-              child: Text("Retornar ao inicio"))
+              onPressed: () => null, child: Text("Retornar ao inicio"))
         ],
       ),
     );

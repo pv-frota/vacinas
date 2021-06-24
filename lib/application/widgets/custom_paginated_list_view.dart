@@ -200,7 +200,6 @@ class _CustomPaginatedListViewState extends State<CustomPaginatedListView> {
 
   ListTile generateTile(int index) {
     final entity = dataInPage![index];
-    print(entity.values![iconIndex!]);
 
     return ListTile(
       leading: usesIcon! && IconHandler.isIconColumn(entity.values![iconIndex!])
