@@ -11,28 +11,28 @@ abstract class AnimalRepository {
   Future<Animal> saveAnimal(Animal animal);
 }
 
-class AnimalRepositoryImpl extends GenericWebRequestImpl
-    implements AnimalRepository {
+class AnimalRepositoryImpl implements AnimalRepository {
   final AnimalSerializer _animalSerializer = AnimalSerializer();
+  final GenericWebRequestImpl _animalRequests;
 
-  AnimalRepositoryImpl(String path) : super(path);
+  AnimalRepositoryImpl(this._animalRequests);
 
   @override
   Future<Animal> saveAnimal(Animal animal) async {
     Map<String, dynamic> asJson = _animalSerializer.to(animal);
-    dynamic map = await super.save(asJson);
+    dynamic map = await _animalRequests.save(asJson);
     return _animalSerializer.from(map);
   }
 
   @override
   Future<Animal> getAnimalById(int id) async {
-    dynamic map = await super.getById(id);
+    dynamic map = await _animalRequests.getById(id);
     return _animalSerializer.from(map);
   }
 
   @override
   Future<List<Animal>> getAllAnimal() async {
-    List map = await super.getAll();
+    List map = await _animalRequests.getAll();
     return _animalSerializer.fromList(map);
   }
 }

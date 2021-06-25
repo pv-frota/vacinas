@@ -17,9 +17,9 @@ class ManipulateAnimalScreen extends HookWidget {
   Widget build(BuildContext context) {
     final state = useProvider(manipulateAnimalController.state);
     final controller = useProvider(manipulateAnimalController);
-    if (selectedId != null) {
-      controller.selectPathAnimal(selectedId!);
-    }
+
+    controller.initializeFields(context, controller, selectedId);
+
     return Scaffold(
       body: Container(
         child: SafeArea(

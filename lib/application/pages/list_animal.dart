@@ -1,5 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +7,7 @@ import 'package:vacinas/application/controllers/manipulate_animal_controller.dar
 import 'package:vacinas/application/pages/utils/responsive.dart';
 import 'package:vacinas/application/widgets/custom_paginated_data_table.dart';
 import 'package:vacinas/application/widgets/custom_paginated_list_view.dart';
+import 'package:vacinas/domain/models/animal.dart';
 
 class ListAnimalScreen extends HookWidget {
   ListAnimalScreen({Key? key}) : super(key: key);
@@ -49,13 +49,23 @@ class ListAnimalScreen extends HookWidget {
 
   Widget displayData(LoadedHomeState state,
       ManipulateAnimalController animalController, BuildContext context) {
-    if (!Responsive.isMobile(context)) {
+    if (Responsive.isDesktop(context)) {
       return CustomPaginatedDataTable(
         data: state.animalList,
         rowsPerPage: 5,
         header: "Lista de animais",
         onTap: (index) {
           animalController.selectAnimal(state.animalList[index]);
+        },
+      );
+    } else if (Responsive.isTablet(context)) {
+      return CustomPaginatedDataTable(
+        data: state.animalList,
+        rowsPerPage: 5,
+        header: "Lista de animais",
+        onTap: (index) {
+          Animal a = state.animalList.elementAt(index);
+          Beamer.of(context).beamToNamed("/animal/edit/${a.id}");
         },
       );
     } else {
@@ -65,7 +75,8 @@ class ListAnimalScreen extends HookWidget {
         usesIcon: true,
         listName: "Lista de animais",
         onTap: (index) {
-          Beamer.of(context).beamToNamed("/animal/editar/$index");
+          Animal a = state.animalList.elementAt(index);
+          Beamer.of(context).beamToNamed("/animal/edit/${a.id}");
         },
       );
     }

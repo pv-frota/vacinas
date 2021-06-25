@@ -6,7 +6,7 @@ import 'package:vacinas/application/controllers/HomePageController.dart';
 import 'package:vacinas/domain/models/animal.dart';
 import 'package:vacinas/domain/models/raca.dart';
 import 'package:vacinas/domain/services/animal_services.dart';
-import 'package:vacinas/main.dart';
+import 'package:vacinas/domain/services/services.dart';
 
 final manipulateAnimalController =
     StateNotifierProvider<ManipulateAnimalController>((ref) {
@@ -17,16 +17,19 @@ abstract class ManipulateAnimalController
     extends StateNotifier<ManipulateAnimalState> {
   ManipulateAnimalController(ManipulateAnimalState state) : super(state);
 
-  final nomeController = TextEditingController();
-  final donoController = TextEditingController();
-  final telefoneController = TextEditingController();
-  final dataController = TextEditingController();
-  final dropdownState = GlobalKey<FormFieldState>();
+  TextEditingController? nomeController;
+  TextEditingController? donoController;
+  TextEditingController? telefoneController;
+  TextEditingController? dataController;
+  GlobalKey<FormFieldState>? dropdownState;
 
   void clearFields();
   Future<void> saveAnimal();
   void selectAnimal(Animal a);
-  void selectPathAnimal(int id);
+  Animal? selectPathAnimal(int id);
+  void updateForm(Animal a);
+  void initializeFields(BuildContext context,
+      ManipulateAnimalController controller, int? selectedId);
 }
 
 class ManipulateAnimalControllerImpl extends ManipulateAnimalController {
@@ -61,11 +64,11 @@ class ManipulateAnimalControllerImpl extends ManipulateAnimalController {
 
   @override
   void selectAnimal(Animal a) {
-    super.nomeController.text = a.nome;
-    super.donoController.text = a.dono;
-    super.telefoneController.text = a.telefone;
-    super.dataController.text = a.nascimento.toString();
-    super.dropdownState.currentState!.didChange(a.tipo);
+    super.nomeController!.text = a.nome;
+    super.donoController!.text = a.dono;
+    super.telefoneController!.text = a.telefone;
+    super.dataController!.text = a.nascimento.toString();
+    super.dropdownState!.currentState!.didChange(a.tipo);
 
     state.animal.id = a.id;
     state.animal.nome = a.nome;
@@ -76,22 +79,54 @@ class ManipulateAnimalControllerImpl extends ManipulateAnimalController {
   }
 
   @override
-  void selectPathAnimal(int id) {
-    List<Animal> list =
-        (_reader(homeController.state) as LoadedHomeState).animalList;
-    Animal a = list.firstWhere((element) => element.id == id);
-    super.nomeController.text = a.nome;
-    super.donoController.text = a.dono;
-    super.telefoneController.text = a.telefone;
-    super.dataController.text = a.nascimento.toString();
-    super.dropdownState.currentState!.didChange(a.tipo);
+  Animal? selectPathAnimal(int id) {
+    Animal? a;
+    try {
+      List<Animal> list =
+          (_reader(homeController.state) as LoadedHomeState).animalList;
+      a = list.firstWhere((element) => element.id == id);
+      return a;
+    } on StateError {
+      return null;
+    }
+  }
 
+  void updateForm(Animal a) {
     state.animal.id = a.id;
     state.animal.nome = a.nome;
     state.animal.tipo = a.tipo;
     state.animal.dono = a.dono;
     state.animal.nascimento = a.nascimento;
     state.animal.telefone = a.telefone;
+  }
+
+  @override
+  void initializeFields(BuildContext context,
+      ManipulateAnimalController controller, int? selectedId) {
+    controller.dropdownState = GlobalKey<FormFieldState>();
+    if (selectedId == null) {
+      controller.nomeController = TextEditingController();
+      controller.donoController = TextEditingController();
+      controller.telefoneController = TextEditingController();
+      controller.dataController = TextEditingController();
+    } else {
+      Animal? a = controller.selectPathAnimal(selectedId);
+      if (a != null) {
+        controller.nomeController = TextEditingController(text: a.nome);
+        controller.donoController = TextEditingController(text: a.dono);
+        controller.telefoneController = TextEditingController(text: a.telefone);
+        controller.dataController =
+            TextEditingController(text: a.nascimento.toString());
+        controller.updateForm(a);
+        WidgetsBinding.instance!.addPostFrameCallback(
+            (_) => controller.dropdownState!.currentState!.didChange(a.tipo));
+      } else {
+        controller.nomeController = TextEditingController();
+        controller.donoController = TextEditingController();
+        controller.telefoneController = TextEditingController();
+        controller.dataController = TextEditingController();
+      }
+    }
   }
 }
 
