@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vacinas/application/controllers/HomePageController.dart';
+import 'package:vacinas/application/controllers/list_animal_controller.dart';
 import 'package:vacinas/domain/models/animal.dart';
 import 'package:vacinas/domain/models/raca.dart';
 import 'package:vacinas/domain/services/animal_services.dart';
@@ -43,7 +43,21 @@ class ManipulateAnimalControllerImpl extends ManipulateAnimalController {
 
   @override
   void clearFields() {
-    // TODO: implement clearFields
+    Animal a = Animal(
+        id: 0,
+        nome: "",
+        dono: "",
+        nascimento: 0,
+        telefone: "",
+        vacinaList: [],
+        tipo: "",
+        raca: Raca(id: 0, nome: ""));
+    updateForm(a);
+    super.nomeController!.text = a.nome;
+    super.donoController!.text = a.dono;
+    super.telefoneController!.text = a.telefone;
+    super.dataController!.text = a.nascimento.toString();
+    super.dropdownState!.currentState!.didChange(a.tipo);
   }
 
   @override

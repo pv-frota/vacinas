@@ -9,7 +9,9 @@ const _iconRoot = 'assets/icons';
 enum IconKey {
   // icons
   dog,
-  cat
+  cat,
+  vaccine,
+  list
 }
 
 extension IconKeyPath on IconKey {
@@ -20,9 +22,15 @@ extension IconKeyPath on IconKey {
         return "$_iconRoot/cat.png";
       case IconKey.dog:
         return "$_iconRoot/dog.png";
+      case IconKey.vaccine:
+        return "$_iconRoot/vaccine.png";
+      case IconKey.list:
+        return "$_iconRoot/list.png";
     }
   }
 }
 
 final catIcon = IconKey.cat.path;
 final dogIcon = IconKey.dog.path;
+final vaccineicon = IconKey.vaccine.path;
+final listIcon = IconKey.list.path;

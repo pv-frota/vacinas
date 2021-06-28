@@ -21,7 +21,7 @@
 //   RoutesCoordinator({required this.navigatorKey})
 //       : _pages = [
 //           MaterialPage<dynamic>(
-//             child: HomeScreen(),
+//             child: ListAnimalPage(),
 //             key: _homeKey,
 //             name: _homeKey.value.pathFormatted,
 //           ),
@@ -57,7 +57,7 @@
 //       if (currentPath.formattedPath != path.formattedPath) {
 //         _pages = [];
 
-//         _addPage(HomeScreen(), name: _homeKey.value, customKey: _homeKey);
+//         _addPage(ListAnimalPage(), name: _homeKey.value, customKey: _homeKey);
 //       } else {
 //         // Otherwise we simply remove all pages other than the matched one
 //         _pages.removeRange(1, _pages.length);
